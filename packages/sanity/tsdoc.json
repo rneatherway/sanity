@@ -19,6 +19,7 @@
     "@deprecated": true,
     "@alpha": true,
     "@param": true,
-    "@returns": true
+    "@returns": true,
+    "@remarks": true
   }
 }
