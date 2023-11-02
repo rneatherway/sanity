@@ -53,5 +53,8 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "watch": "pkg-utils watch --tsconfig tsconfig.lib.json"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.38.0"
   }
 }

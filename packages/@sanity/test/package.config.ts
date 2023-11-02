@@ -7,7 +7,7 @@ export default defineConfig({
     {
       source: './src/cli/index.ts',
       require: './lib/cli.js',
-      runtime: 'node',
     },
   ],
+  runtime: 'node',
 })
