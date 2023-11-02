@@ -1,5 +1,6 @@
 import os from 'os'
 import {type PlaywrightTestConfig, devices} from '@playwright/test'
+import {CreatePlaywrightConfigOptions} from './types'
 
 // Paths
 const TESTS_PATH = './test/e2e/tests'
@@ -13,10 +14,7 @@ const OS_BROWSERS =
 // Read environment variables
 const CI = readBoolEnv('CI', false)
 const E2E_DEBUG = readBoolEnv('SANITY_E2E_DEBUG', false)
-const PROJECT_ID = process.env.SANITY_E2E_PROJECT_ID!
-const SANITY_E2E_SESSION_TOKEN = process.env.SANITY_E2E_SESSION_TOKEN!
-
-const BASE_URL = process.env.SANITY_E2E_BASE_URL ?? 'http://localhost:3339/'
+const BASE_URL = 'http://localhost:3333'
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -51,7 +49,6 @@ const defaultConfig: PlaywrightTestConfig = {
     trace: 'on-first-retry',
     baseURL: BASE_URL,
     headless: readBoolEnv('SANITY_E2E_HEADLESS', !E2E_DEBUG),
-    storageState: getStorageStateForProjectId(PROJECT_ID),
     viewport: {width: 1728, height: 1000},
     contextOptions: {reducedMotion: 'reduce'},
     video: {mode: 'on-first-retry'},
@@ -88,7 +85,7 @@ const defaultConfig: PlaywrightTestConfig = {
      * If it is running in CI just start the production build assuming that studio is already build
      * Locally run the dev server
      */
-    command: CI ? 'yarn e2e:start' : 'yarn e2e:dev',
+    command: 'yarn dev',
     port: 3339,
     reuseExistingServer: !CI,
     stdout: 'pipe',
@@ -120,17 +117,25 @@ function readBoolEnv(flag: string, defaultValue: boolean) {
  * @returns A storage state object
  * @internal
  */
-function getStorageStateForProjectId(projectId: string) {
+function getStorageStateForProjectId({
+  projectId,
+  token,
+  baseUrl,
+}: {
+  projectId: string
+  token: string
+  baseUrl: string
+}) {
   return {
     cookies: [],
     origins: [
       {
-        origin: BASE_URL,
+        origin: baseUrl,
         localStorage: [
           {
             name: `__studio_auth_token_${projectId}`,
             value: JSON.stringify({
-              token: SANITY_E2E_SESSION_TOKEN,
+              token: token,
               time: new Date().toISOString(),
             }),
           },
@@ -140,8 +145,6 @@ function getStorageStateForProjectId(projectId: string) {
   }
 }
 
-type UserPlaywrightTestConfig = PlaywrightTestConfig | ((config: PlaywrightTestConfig) => void)
-
 /**
  * Create a Playwright test config object.
  *
@@ -149,13 +152,42 @@ type UserPlaywrightTestConfig = PlaywrightTestConfig | ((config: PlaywrightTestC
  * @returns A Playwright test config object
  * @public
  */
-export function createPlaywrightConfig(options?: UserPlaywrightTestConfig): PlaywrightTestConfig {
-  if (typeof options === 'function') {
-    const config = {...defaultConfig}
-    options(config)
-    return config
-  } else if (typeof options === 'object') {
-    return {...defaultConfig, ...options}
+export function createPlaywrightConfig(
+  options: CreatePlaywrightConfigOptions,
+): PlaywrightTestConfig {
+  const {playwrightOptions, projectId, token} = options
+
+  if (typeof playwrightOptions === 'function') {
+    const config = {
+      ...defaultConfig,
+    }
+
+    const mergedConfig = playwrightOptions(config)
+
+    return {
+      ...mergedConfig,
+      use: {
+        ...mergedConfig.use,
+        storageState: getStorageStateForProjectId({
+          projectId,
+          token,
+          baseUrl: mergedConfig?.use?.baseURL || BASE_URL,
+        }),
+      },
+    }
+  } else if (typeof playwrightOptions === 'object') {
+    const config = {
+      ...defaultConfig,
+      use: {
+        ...defaultConfig.use,
+        storageState: getStorageStateForProjectId({
+          projectId,
+          token,
+          baseUrl: playwrightOptions?.use?.baseURL || BASE_URL,
+        }),
+      },
+    }
+    return {...config, ...playwrightOptions}
   }
 
   return defaultConfig
