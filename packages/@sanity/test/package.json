@@ -1,6 +1,6 @@
 {
   "name": "@sanity/test",
-  "version": "3.19.0",
+  "version": "3.19.1",
   "description": "Sanity Testing Package",
   "private": true,
   "keywords": [
@@ -25,8 +25,7 @@
       "source": "./src/index.ts",
       "require": "./lib/index.js",
       "node": {
-        "import": "./lib/index.cjs.mjs",
-        "require": "./lib/index.js"
+        "import": "./lib/index.cjs.mjs"
       },
       "import": "./lib/index.esm.js",
       "default": "./lib/index.esm.js"
@@ -55,6 +54,6 @@
     "watch": "pkg-utils watch --tsconfig tsconfig.lib.json"
   },
   "dependencies": {
-    "@playwright/test": "^1.38.0"
+    "@playwright/test": "^1.39.0"
   }
 }
