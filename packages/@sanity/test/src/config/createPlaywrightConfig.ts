@@ -86,7 +86,7 @@ const defaultConfig: PlaywrightTestConfig = {
      * Locally run the dev server
      */
     command: 'yarn dev',
-    port: 3339,
+    port: 3333,
     reuseExistingServer: !CI,
     stdout: 'pipe',
   },

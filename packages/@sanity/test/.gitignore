@@ -3,6 +3,7 @@
 
 # Compiled files
 /lib
+*.tsbuildinfo
 
 # Coverage directory used by tools like istanbul
 /coverage
