@@ -1,6 +1,7 @@
 import os from 'os'
 import {type PlaywrightTestConfig, devices} from '@playwright/test'
 import {CreatePlaywrightConfigOptions} from './types'
+import {getStorageStateForProjectId} from './getStorageStateForProjectId'
 
 // Paths
 const TESTS_PATH = './test/e2e/tests'
@@ -108,41 +109,6 @@ function readBoolEnv(flag: string, defaultValue: boolean) {
   }
 
   return value === 'true' || value === '1' || value === 'yes'
-}
-
-/**
- * Returns a storage state with an auth token injected to the localstorage for the given project ID
- *
- * @param projectId - The ID of the project the auth token belongs to
- * @returns A storage state object
- * @internal
- */
-function getStorageStateForProjectId({
-  projectId,
-  token,
-  baseUrl,
-}: {
-  projectId: string
-  token: string
-  baseUrl: string
-}) {
-  return {
-    cookies: [],
-    origins: [
-      {
-        origin: baseUrl,
-        localStorage: [
-          {
-            name: `__studio_auth_token_${projectId}`,
-            value: JSON.stringify({
-              token: token,
-              time: new Date().toISOString(),
-            }),
-          },
-        ],
-      },
-    ],
-  }
 }
 
 /**

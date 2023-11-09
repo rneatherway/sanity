@@ -11,5 +11,11 @@ cli.command('init').action(async () => {
   await initCommand()
 })
 
+cli.command('codegen').action(async () => {
+  const {codegenCommand} = await import('./commands/codegen')
+
+  await codegenCommand()
+})
+
 cli.help()
 cli.parse()
