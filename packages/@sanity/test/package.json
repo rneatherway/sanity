@@ -53,6 +53,9 @@
     "watch": "tsc --watch --project tsconfig.lib.json"
   },
   "dependencies": {
-    "@playwright/test": "^1.39.0"
+    "cac": "^6.7.12",
+    "@playwright/test": "^1.39.0",
+    "@sanity/uuid": "^3.0.1",
+    "@sanity/client": "^6.7.0"
   }
 }
