@@ -206,7 +206,10 @@ export function NewDocumentButton(props: NewDocumentButtonProps) {
           >
             <RootFlex direction="column" flex={1} height="fill">
               <DialogHeaderCard padding={2} borderBottom>
-                <TextInput {...sharedTextInputProps} />
+                <TextInput
+                  data-testid="new-document-button-search-input"
+                  {...sharedTextInputProps}
+                />
               </DialogHeaderCard>
 
               <Flex direction="column" overflow="hidden">
@@ -247,7 +250,12 @@ export function NewDocumentButton(props: NewDocumentButtonProps) {
                 </Box>
               </Box>
               <Card borderTop borderBottom padding={1}>
-                <TextInput {...sharedTextInputProps} fontSize={1} radius={1} />
+                <TextInput
+                  data-testid="new-document-button-search-input"
+                  {...sharedTextInputProps}
+                  fontSize={1}
+                  radius={1}
+                />
               </Card>
             </Stack>
           </PopoverHeaderCard>
