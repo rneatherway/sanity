@@ -14,6 +14,7 @@ import {
   PortableTextEditableProps,
 } from '@sanity/portable-text-editor'
 import {Path} from '@sanity/types'
+import {omit} from 'lodash'
 import {BoundaryElementProvider, useBoundaryElement, useGlobalKeyDown, useLayer} from '@sanity/ui'
 import React, {useCallback, useMemo, useRef} from 'react'
 import {PortableTextInputProps} from '../../types/inputProps'
@@ -143,7 +144,7 @@ export function Editor(props: EditorProps) {
       style: noOutlineStyle,
     }
     const defaultRender = (defProps: PortableTextEditableProps) => (
-      <PortableTextEditable {...editableProps} {...defProps} />
+      <PortableTextEditable {...omit(editableProps, ['renderDefault'])} {...defProps} />
     )
     if (renderEditable) {
       return renderEditable({...editableProps, renderDefault: defaultRender})
