@@ -1,5 +1,4 @@
-/* eslint-disable boundaries/element-types */
-import React, {useState, useMemo, useCallback, useEffect} from 'react'
+import React, {useState, useMemo, useCallback} from 'react'
 import {
   OnCopyFn,
   OnPasteFn,
@@ -14,7 +13,6 @@ import {Path, PortableTextBlock, PortableTextTextBlock} from '@sanity/types'
 import {Box, Portal, PortalProvider, useBoundaryElement, usePortal} from '@sanity/ui'
 import {ArrayOfObjectsInputProps, RenderCustomMarkers} from '../../types'
 import {ActivateOnFocus} from '../../components/ActivateOnFocus/ActivateOnFocus'
-import {useDocumentPane} from '../../../../desk'
 import {EMPTY_ARRAY} from '../../../util'
 import {ChangeIndicator} from '../../../changeIndicators'
 import {RenderBlockActionsCallback} from '../../types/_transitional'
@@ -81,19 +79,10 @@ export function Compositor(props: Omit<InputProps, 'schemaType' | 'arrayFunction
   const boundaryElement = useBoundaryElement().element
   const [wrapperElement, setWrapperElement] = useState<HTMLDivElement | null>(null)
   const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null)
-  const {activeViewId} = useDocumentPane()
 
   const handleToggleFullscreen = useCallback(() => {
     onToggleFullscreen()
   }, [onToggleFullscreen])
-
-  //Want to toggle the fullscreen if you switch to another tab
-  useEffect(() => {
-    if (isFullscreen && isActive) {
-      handleToggleFullscreen()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeViewId])
 
   const hotkeysWithFullscreenToggle = useMemo(
     () => ({
