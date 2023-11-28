@@ -1,6 +1,6 @@
 {
   "name": "@sanity/test",
-  "version": "3.19.1",
+  "version": "3.20.2",
   "description": "Sanity Testing Package",
   "private": true,
   "keywords": [
@@ -57,6 +57,6 @@
     "cac": "^6.7.12",
     "@playwright/test": "^1.39.0",
     "@sanity/uuid": "^3.0.1",
-    "@sanity/client": "^6.7.0"
+    "@sanity/client": "^6.8.6"
   }
 }

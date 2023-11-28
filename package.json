@@ -100,7 +100,7 @@
     "@playwright/test": "^1.39.0",
     "@sanity/client": "^6.8.6",
     "@sanity/pkg-utils": "^3.2.3",
-    "@sanity/test": "3.19.1",
+    "@sanity/test": "3.20.2",
     "@sanity/tsdoc": "1.0.0-alpha.38",
     "@sanity/uuid": "^3.0.2",
     "@types/jest": "^29.5.6",
