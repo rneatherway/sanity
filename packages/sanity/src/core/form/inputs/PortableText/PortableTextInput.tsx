@@ -114,12 +114,6 @@ export function PortableTextInput(props: PortableTextInputProps) {
     }
   }, [])
 
-  useEffect(() => {
-    if (!isActive && isFullscreen) {
-      setIsFullscreen(false)
-    }
-  }, [isActive, isFullscreen])
-
   // Reset invalidValue if new value is coming in from props
   useEffect(() => {
     if (invalidValue && value !== invalidValue.value) {
@@ -232,8 +226,6 @@ export function PortableTextInput(props: PortableTextInputProps) {
   useEffect(() => {
     if (hasFocusWithin) {
       setIsActive(true)
-    } else if (!hasFocusWithin) {
-      setIsActive(false)
     }
   }, [hasFocusWithin])
 
