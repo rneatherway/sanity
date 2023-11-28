@@ -4,7 +4,7 @@ import {
   PortalProvider,
   usePortal,
   useElementRect,
-  Box,
+  TooltipDelayGroupProvider,
 } from '@sanity/ui'
 import React, {createElement, useEffect, useMemo, useRef, useState} from 'react'
 import styled, {css} from 'styled-components'
@@ -19,15 +19,18 @@ import {PermissionCheckBanner} from './PermissionCheckBanner'
 import {FormView} from './documentViews'
 import {DocumentPanelHeader} from './header'
 import {ScrollContainer, useTimelineSelector, VirtualizerScrollInstanceProvider} from 'sanity'
+import {TOOLTIP_DELAY_PROPS} from '../../../../ui/tooltip/constants'
+import {DocumentStatusBar} from '../statusBar'
 
 interface DocumentPanelProps {
   footerHeight: number | null
   rootElement: HTMLDivElement | null
   isInspectOpen: boolean
+  setActionsBoxElement: (el: HTMLElement | null) => void
   setDocumentPanelPortalElement: (el: HTMLElement | null) => void
 }
 
-const DocumentBox = styled(Box)({
+const DocumentBox = styled(Flex)({
   position: 'relative',
 })
 
@@ -46,7 +49,13 @@ const Scroller = styled(ScrollContainer)<{$disabled: boolean}>(({$disabled}) => 
 })
 
 export const DocumentPanel = function DocumentPanel(props: DocumentPanelProps) {
-  const {footerHeight, isInspectOpen, rootElement, setDocumentPanelPortalElement} = props
+  const {
+    footerHeight,
+    isInspectOpen,
+    rootElement,
+    setActionsBoxElement,
+    setDocumentPanelPortalElement,
+  } = props
   const {
     activeViewId,
     displayed,
@@ -152,7 +161,7 @@ export const DocumentPanel = function DocumentPanel(props: DocumentPanelProps) {
       <PaneContent>
         <Flex height="fill">
           {(features.resizablePanes || !showInspector) && (
-            <DocumentBox flex={2} overflow="hidden">
+            <DocumentBox direction="column" flex={2} overflow="hidden">
               <PortalProvider
                 element={portalElement}
                 __unstable_elements={{documentScrollElement: documentScrollElement}}
@@ -198,6 +207,13 @@ export const DocumentPanel = function DocumentPanel(props: DocumentPanelProps) {
                     <div data-testid="document-panel-portal" ref={portalRef} />
                   </VirtualizerScrollInstanceProvider>
                 </BoundaryElementProvider>
+              </PortalProvider>
+
+              {/* Footer */}
+              <PortalProvider element={portalElement}>
+                <TooltipDelayGroupProvider delay={TOOLTIP_DELAY_PROPS}>
+                  <DocumentStatusBar actionsBoxRef={setActionsBoxElement} />
+                </TooltipDelayGroupProvider>
               </PortalProvider>
             </DocumentBox>
           )}
