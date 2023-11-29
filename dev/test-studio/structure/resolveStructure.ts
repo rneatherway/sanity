@@ -66,8 +66,6 @@ export const structure: StructureResolver = (S, {schema, documentStore}) => {
         ],
       }),
 
-      S.divider(),
-
       _buildTypeGroup(S, schema, {
         id: 'input-standard',
         title: 'Standard inputs',
@@ -372,16 +370,12 @@ export const structure: StructureResolver = (S, {schema, documentStore}) => {
         ]),
       ),
 
-      S.divider(),
-
       _buildTypeGroup(S, schema, {
         icon: SyncIcon,
         id: 'input-ci',
         title: 'CI',
         types: CI_INPUT_TYPES,
       }),
-
-      S.divider(),
 
       _buildTypeGroup(S, schema, {
         id: 'v3',
@@ -405,8 +399,6 @@ export const structure: StructureResolver = (S, {schema, documentStore}) => {
         title: 'TS doc',
         types: TS_DOC_TYPES,
       }),
-
-      S.divider(),
 
       ...S.documentTypeListItems().filter((listItem) => {
         const id = listItem.getId()
