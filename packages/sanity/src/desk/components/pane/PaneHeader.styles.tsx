@@ -18,7 +18,7 @@ export const Root = styled(Layer)<RootProps>(({$borderBottom = true}) => {
       left: 0px;
       right: 0px;
       bottom: -1px;
-      border-bottom: 1px solid ${$borderBottom ? 'var(--card-shadow-outline-color)' : 'transparent'};
+      border-bottom: 1px solid ${$borderBottom ? 'var(--card-border-color)' : 'transparent'};
       opacity: 1;
       transition: border-color 200ms ease-in;
     }
